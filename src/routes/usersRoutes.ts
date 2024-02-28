@@ -4,6 +4,12 @@ import { knex } from '../database';
 import { z } from 'zod';
 
 export async function userRoutes(app: FastifyInstance) {
+    app.get('/', async (request) => {
+        const usersList = await knex('users').select();
+
+        return { users: usersList };
+    })
+
     app.post('/', async (request, reply) => {
         const createUserBodySchema = z.object({
             name: z.string(),
