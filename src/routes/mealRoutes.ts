@@ -4,6 +4,22 @@ import { randomUUID } from 'node:crypto'
 import { knex } from '../database';
 
 export async function mealRoutes(app: FastifyInstance) {
+    app.delete('/:userId/:mealId', async (request, reply) => {
+        const deleteMealRequestParam = z.object({
+            userId: z.string().uuid(),
+            mealId: z.string().uuid(),
+        });
+
+        const { mealId, userId } = deleteMealRequestParam.parse(request.params);
+
+        await knex('meals').where({
+            id: mealId,
+            user_id: userId
+        }).delete();
+
+        reply.status(200);
+    });
+
     app.get('/:userId', async (request, reply) => {
         const getMealRequestParams = z.object({
             userId: z.string().uuid()

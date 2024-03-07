@@ -9,7 +9,7 @@
     * Date and Time
     * Whether it is within the diet or not.
 [] It must be possible to edit a meal, being able to change all the above data.
-[] It must be possible to delete a meal.
+[x] It must be possible to delete a meal.
 [x] It must be possible to list all meals of a user.
 [x] It must be possible to view a single meal.
 [] It must be possible to retrieve the metrics of a user.
