@@ -17,7 +17,7 @@ export async function mealRoutes(app: FastifyInstance) {
             user_id: userId
         }).delete();
 
-        reply.status(200);
+        reply.status(200).send();
     });
 
     app.get('/:userId', async (request, reply) => {
@@ -77,5 +77,35 @@ export async function mealRoutes(app: FastifyInstance) {
         });
 
         reply.status(201).send()
+    })
+
+    app.put('/:userId/:mealId', async (request, reply) => {
+        const putMealRequestParams = z.object({
+            userId: z.string().uuid(),
+            mealId: z.string().uuid(),
+        });
+
+        const putMealRequestBody = z.object({
+            name: z.string(),
+            description: z.string(),
+            dietMeal: z.boolean(),
+        });
+
+        const { mealId, userId } = putMealRequestParams.parse(request.params);
+        const { description, dietMeal, name } = putMealRequestBody.parse(request.body);
+
+        await knex('meals')
+            .where({
+                id: mealId,
+                user_id: userId
+            })
+            .update({
+                description,
+                name,
+                diet_meal: dietMeal
+            });
+
+        reply.status(200).send();
+
     })
 }

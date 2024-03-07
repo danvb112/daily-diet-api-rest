@@ -8,7 +8,7 @@
     * Description
     * Date and Time
     * Whether it is within the diet or not.
-[] It must be possible to edit a meal, being able to change all the above data.
+[x] It must be possible to edit a meal, being able to change all the above data.
 [x] It must be possible to delete a meal.
 [x] It must be possible to list all meals of a user.
 [x] It must be possible to view a single meal.
@@ -17,4 +17,4 @@
 [] It must me possible get the Total number of meals within the diet.
 [] It must me possible get the Total number of meals outside the diet.
 [] It must me possible get the Best sequence of meals within the diet.
-[] The user can only view, edit, and delete the meals they created.
+[x] The user can only view, edit, and delete the meals they created.
