@@ -1,8 +1,43 @@
 import { FastifyInstance } from 'fastify'
 import { z } from 'zod'
+import { randomUUID } from 'node:crypto'
 import { knex } from '../database';
 
 export async function mealRoutes(app: FastifyInstance) {
+    app.get('/:userId', async (request, reply) => {
+        const getMealRequestParams = z.object({
+            userId: z.string().uuid()
+        });
+
+        const { userId } = getMealRequestParams.parse(request.params);
+
+        const meals = await knex('meals').where({
+            user_id: userId
+        });
+
+        reply.status(200).send({
+            meals
+        })
+    });
+
+    app.get('/:userId/:mealId', async (request, reply) => {
+        const getMealRequestParam = z.object({
+            userId: z.string().uuid(),
+            mealId: z.string().uuid(),
+        });
+
+        const { mealId, userId } = getMealRequestParam.parse(request.params);
+
+        const meal = await knex('meals').where({
+            id: mealId,
+            user_id: userId
+        }).select();
+
+        reply.status(200).send({
+            meal
+        })
+    })
+
     app.post('/:userId', async (request, reply) => {
         const postMealRequestParams = z.object({
             userId: z.string().uuid()
@@ -18,6 +53,7 @@ export async function mealRoutes(app: FastifyInstance) {
         const { description, dietMeal, name } = postMealRequestBody.parse(request.body);
 
         await knex('meals').insert({
+            id: randomUUID(),
             description,
             diet_meal: dietMeal,
             name,
